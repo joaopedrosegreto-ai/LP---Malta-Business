@@ -222,6 +222,26 @@
     });
   }
 
+  /* ---------- FAQ accordion (página /landing-page) ---------- */
+  function faq() {
+    const items = document.querySelectorAll('.faq__item');
+    if (!items.length) return;
+    items.forEach(item => {
+      const q = item.querySelector('.faq__q');
+      const a = item.querySelector('.faq__a');
+      if (!q || !a) return;
+      q.addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+        items.forEach(it => { it.classList.remove('open'); const aa = it.querySelector('.faq__a'); if (aa) aa.style.height = '0px'; });
+        if (!isOpen) { item.classList.add('open'); a.style.height = a.scrollHeight + 'px'; }
+      });
+    });
+    window.addEventListener('resize', () => {
+      const openA = document.querySelector('.faq__item.open .faq__a');
+      if (openA) openA.style.height = openA.scrollHeight + 'px';
+    });
+  }
+
   /* ---------- CONTENT / IMAGE PROTECTION (deterrents) ----------
      Nota: código front-end é sempre baixado pelo navegador; isto dificulta
      a cópia casual (salvar imagem, arrastar, "ver código fonte"), não é
@@ -262,6 +282,7 @@
     process();
     services();
     about();
+    faq();
     if (ScrollTrigger) ScrollTrigger.refresh();
   }
 
