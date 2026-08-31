@@ -19,6 +19,7 @@
     var f=$('gateForm');
     f.addEventListener('submit',async function(e){
       e.preventDefault(); $('err').textContent='';
+      if(!window.crypto||!crypto.subtle){ $('err').textContent='Abra por um servidor (http://localhost) ou pelo site publicado. A senha nao abre com o arquivo aberto direto (file://).'; return; }
       var btn=$('go'); btn.disabled=true; btn.textContent='Abrindo...';
       try{
         var html=await decrypt($('pw').value);
@@ -29,6 +30,7 @@
         btn.disabled=false; btn.textContent='Entrar'; $('pw').select();
       }
     });
+    if(location.protocol==='file:'){ $('err').textContent='Dica: abra por http://localhost ou pelo site publicado.'; }
     (async function(){try{var s=sessionStorage.getItem('mpb'); if(s){reveal(await decrypt(s));}}catch(_){}})();
   });
 })();
