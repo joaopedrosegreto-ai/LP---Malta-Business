@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<title>Playbook Malta Business</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800;900&family=Archivo+Expanded:wght@800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+  :root{
+    --bg:#0a0a0a; --bg-2:#100f0e; --card:#141312; --line:rgba(243,242,239,.12);
+    --line-2:rgba(243,242,239,.22); --ink:#f3f2ef; --grey:#8d8d8a; --dim:#5a5754;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --sans:'Archivo',system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--ink);color:var(--bg)}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+
+  .wrap{display:grid;grid-template-columns:260px 1fr;gap:0;max-width:1320px;margin:0 auto}
+
+  /* sidebar / TOC */
+  .side{position:sticky;top:0;height:100vh;border-right:1px solid var(--line);
+    padding:38px 30px;display:flex;flex-direction:column;gap:28px;overflow-y:auto}
+  .side__logo{width:118px;opacity:.96}
+  .side__meta{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);line-height:1.9}
+  .toc{display:flex;flex-direction:column;gap:2px;margin-top:auto;margin-bottom:auto}
+  .toc a{display:flex;gap:12px;align-items:baseline;font-size:13.5px;color:var(--grey);
+    padding:7px 0;transition:color .25s;border-bottom:1px solid transparent}
+  .toc a:hover{color:var(--ink)}
+  .toc a b{font-family:var(--mono);font-size:11px;color:var(--dim);font-weight:500;min-width:20px}
+  .side__foot{font-family:var(--mono);font-size:10.5px;color:var(--dim);letter-spacing:.06em;line-height:1.8}
+
+  /* main */
+  main{padding:0 clamp(24px,5vw,80px) 120px;min-width:0}
+  .cover{padding:16vh 0 10vh;border-bottom:1px solid var(--line)}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--grey);display:inline-flex;gap:.7em;align-items:center}
+  .kicker::before{content:"✱";color:var(--ink)}
+  .cover h1{font-weight:800;font-size:clamp(2.6rem,6.5vw,5.2rem);line-height:.98;letter-spacing:-.03em;margin:26px 0 24px;text-wrap:balance;max-width:16ch}
+  .cover h1 em{font-style:normal;font-weight:300;color:var(--grey)}
+  .cover p{max-width:60ch;color:var(--grey);font-size:clamp(1rem,1.4vw,1.18rem)}
+  .cover .signature{margin-top:34px;font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.05em}
+
+  section{padding:8vh 0;border-bottom:1px solid var(--line)}
+  .sec__no{font-family:var(--mono);font-size:12px;letter-spacing:.18em;color:var(--dim)}
+  .sec__title{font-weight:800;font-size:clamp(1.7rem,3.6vw,2.7rem);line-height:1.03;letter-spacing:-.02em;margin:12px 0 8px;text-wrap:balance}
+  .sec__intro{max-width:64ch;color:var(--grey);margin-bottom:38px}
+  h3{font-weight:700;font-size:1.15rem;letter-spacing:-.01em;margin-bottom:8px}
+  p{max-width:70ch}
+  strong{color:var(--ink);font-weight:600}
+  .lead-ink{color:var(--ink)}
+
+  .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .card{border:1px solid var(--line);border-radius:10px;padding:26px 24px;background:linear-gradient(180deg,rgba(243,242,239,.02),transparent)}
+  .card .tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);margin-bottom:14px;display:block}
+  .card p{color:var(--grey);font-size:.94rem}
+  .card ul{list-style:none;margin-top:12px;display:flex;flex-direction:column;gap:8px}
+  .card li{color:var(--grey);font-size:.92rem;padding-left:18px;position:relative}
+  .card li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--dim)}
+
+  .rows{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+  .row{display:grid;grid-template-columns:180px 1fr;gap:24px;padding:20px 0;border-bottom:1px solid var(--line)}
+  .row .k{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);padding-top:3px}
+  .row .v{color:var(--ink)}
+  .row .v span{color:var(--grey)}
+
+  /* swatches */
+  .swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+  .sw{border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .sw .chip{height:88px}
+  .sw .info{padding:12px 14px;font-family:var(--mono);font-size:11px;letter-spacing:.04em}
+  .sw .info b{display:block;color:var(--ink);font-weight:500;margin-bottom:3px;font-family:var(--sans);font-size:13px;letter-spacing:0}
+  .sw .info span{color:var(--grey)}
+
+  /* type specimen */
+  .specimen{border:1px solid var(--line);border-radius:10px;padding:30px;margin-top:6px}
+  .specimen .big{font-weight:800;font-size:clamp(2rem,5vw,3.4rem);letter-spacing:-.02em;line-height:1}
+  .specimen .big em{font-style:normal;font-weight:300;color:var(--grey)}
+  .specimen .row-t{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:20px;font-family:var(--mono);font-size:12px;color:var(--grey);letter-spacing:.04em}
+
+  /* do / dont */
+  .dd{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .dd .col{border:1px solid var(--line);border-radius:10px;padding:22px 24px}
+  .dd h4{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .dd .yes h4::before{content:"✓";color:var(--ink)}
+  .dd .no h4::before{content:"✕";color:var(--dim)}
+  .dd ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+  .dd li{font-size:.92rem;color:var(--grey);padding-left:16px;position:relative}
+  .dd li::before{content:"·";position:absolute;left:0;color:var(--dim)}
+
+  /* plans */
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .plan{border:1px solid var(--line);border-radius:12px;padding:26px 22px;display:flex;flex-direction:column;gap:6px}
+  .plan.feat{border-color:var(--line-2);background:linear-gradient(180deg,rgba(243,242,239,.05),transparent)}
+  .plan .nm{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
+  .plan .pr{font-weight:800;font-size:2.1rem;letter-spacing:-.02em;margin:6px 0}
+  .plan .pr small{font-size:.9rem;color:var(--grey);font-weight:500;vertical-align:.5em;margin-right:3px}
+  .plan .dl{font-family:var(--mono);font-size:11px;color:var(--grey);margin-bottom:8px}
+  .plan p{font-size:.9rem;color:var(--grey)}
+
+  /* numbered process / slides */
+  .steps{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+  .step{display:grid;grid-template-columns:64px 1fr;gap:20px;padding:22px 0;border-bottom:1px solid var(--line);align-items:baseline}
+  .step .n{font-weight:800;font-size:1.5rem;color:var(--dim);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .step h3{margin-bottom:5px}
+  .step p{color:var(--grey);font-size:.94rem}
+
+  /* message templates */
+  .msg{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:16px}
+  .msg__h{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between;
+    padding:14px 20px;background:var(--card);border-bottom:1px solid var(--line)}
+  .msg__h b{font-size:.98rem}
+  .msg__h .when{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey)}
+  .msg__b{padding:20px;color:var(--ink);font-size:.95rem;line-height:1.7;white-space:pre-wrap}
+  .msg__b .var{color:var(--grey)}
+
+  .callout{border:1px solid var(--line-2);border-radius:10px;padding:20px 24px;background:var(--bg-2);margin-top:22px}
+  .callout .tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);display:block;margin-bottom:8px}
+  .callout p{color:var(--grey);font-size:.92rem}
+
+  .foot{padding:9vh 0 0;color:var(--dim);font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;line-height:1.9}
+
+  @media (max-width:920px){
+    .wrap{grid-template-columns:1fr}
+    .side{position:static;height:auto;border-right:none;border-bottom:1px solid var(--line);
+      flex-direction:row;flex-wrap:wrap;align-items:center;gap:18px 30px;padding:22px clamp(24px,5vw,80px)}
+    .toc{display:none}
+    .side__foot{display:none}
+    .side__meta{margin-left:auto;text-align:right}
+    main{padding-top:10px}
+    .cover{padding-top:8vh}
+    .grid2,.grid3,.plans,.dd{grid-template-columns:1fr}
+    .row{grid-template-columns:1fr;gap:6px}
+  }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <aside class="side">
+    <img class="side__logo" src="data:image/png;base64,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" alt="Malta Business">
+    <div class="side__meta">Brand Playbook<br>Ed. 2026 · v1</div>
+    <nav class="toc">
+      <a href="#marca"><b>01</b> A marca</a>
+      <a href="#posicionamento"><b>02</b> Posicionamento</a>
+      <a href="#arquetipos"><b>03</b> Arquétipos</a>
+      <a href="#visual"><b>04</b> Identidade visual</a>
+      <a href="#voz"><b>05</b> Tom de voz</a>
+      <a href="#provas"><b>06</b> Portfólio & provas</a>
+      <a href="#planos"><b>07</b> Serviços & planos</a>
+      <a href="#pitch"><b>08</b> Apresentação comercial</a>
+      <a href="#scripts"><b>09</b> Scripts de atendimento</a>
+      <a href="#autenticar"><b>10</b> Autenticar a marca</a>
+    </nav>
+    <div class="side__foot">João Pedro · Malta<br>CNPJ 63.593.320/0001-12<br>Belo Horizonte · BR</div>
+  </aside>
+
+  <main>
+    <header class="cover">
+      <span class="kicker">Brand & Business Playbook</span>
+      <h1>Sua marca merece <em>ser inesquecível.</em></h1>
+      <p>O contexto completo da Malta Business em um só lugar: essência, posicionamento, arquétipos, identidade visual, voz, provas, planos e scripts. Use como base para a apresentação comercial, o brandbook e o atendimento.</p>
+      <div class="signature">Documento-fonte · mantenha atualizado a cada evolução da marca</div>
+    </header>
+
+    <!-- 01 -->
+    <section id="marca">
+      <span class="sec__no">01 · A MARCA</span>
+      <h2 class="sec__title">Quem é a Malta</h2>
+      <p class="sec__intro lead-ink">Malta é a marca profissional de João Pedro: designer gráfico e desenvolvedor front end que também produz foto e vídeo. A rara combinação de <strong>estética, código e imagem</strong> numa só pessoa, do conceito à publicação.</p>
+      <div class="grid3">
+        <div class="card"><span class="tag">Essência</span><p>Unir design, tecnologia e imagem para transformar marcas comuns em marcas lembradas.</p></div>
+        <div class="card"><span class="tag">Missão</span><p>Fazer cada clique valer: transformar visitas em clientes e marcas em experiências memoráveis.</p></div>
+        <div class="card"><span class="tag">Promessa</span><p>Do briefing à publicação, tudo feito por mim, sem intermediários, sem solução genérica.</p></div>
+      </div>
+      <div class="rows" style="margin-top:26px">
+        <div class="row"><div class="k">Nome / marca</div><div class="v">João Pedro, conhecido como <strong>Malta</strong> · marca <strong>Malta Business</strong></div></div>
+        <div class="row"><div class="k">Formação</div><div class="v">Design Gráfico, <strong>UNA</strong> <span>· 8 anos de experiência</span></div></div>
+        <div class="row"><div class="k">Atuação</div><div class="v">Agência <strong>QH4 Growth</strong> <span>e projetos independentes (Malta Business)</span></div></div>
+        <div class="row"><div class="k">Base</div><div class="v">Belo Horizonte / MG <span>· atende Brasil todo (remoto)</span></div></div>
+      </div>
+    </section>
+
+    <!-- 02 -->
+    <section id="posicionamento">
+      <span class="sec__no">02 · POSICIONAMENTO</span>
+      <h2 class="sec__title">O que faz, para quem e por quê</h2>
+      <p class="sec__intro">Posicionamento é a frase que você quer que fique na cabeça do cliente. O da Malta:</p>
+      <div class="callout" style="margin-top:0;margin-bottom:26px">
+        <span class="tag">Statement de posicionamento</span>
+        <p class="lead-ink" style="font-size:1.15rem;color:var(--ink);max-width:70ch">Para negócios que dependem de resultado, a Malta cria landing pages e conteúdo visual de alta performance, unindo design, código e imagem para transformar cliques em clientes.</p>
+      </div>
+      <div class="grid2">
+        <div class="card"><span class="tag">O que entrega</span><ul><li>Landing pages de alta conversão (carro-chefe)</li><li>Sites institucionais e front end</li><li>Design gráfico e identidade visual</li><li>Criativos para anúncios (estático e vídeo)</li><li>Fotografia e vídeo (Malta Business)</li></ul></div>
+        <div class="card"><span class="tag">Para quem</span><ul><li>Empresas que investem em tráfego e precisam converter</li><li>Marmorarias e negócios de alto padrão (nicho forte)</li><li>Infoprodutores, eventos e lançamentos</li><li>Agências que precisam de execução de LP</li></ul></div>
+      </div>
+      <div class="grid3" style="margin-top:18px">
+        <div class="card"><span class="tag">Diferencial 01</span><p><strong>Tudo num lugar.</strong> Design, desenvolvimento e foto/vídeo com a mesma pessoa. Foto e vídeo entram como serviço à parte, quando o projeto pede.</p></div>
+        <div class="card"><span class="tag">Diferencial 02</span><p><strong>Código próprio.</strong> Nada de construtor visual: páginas mais rápidas, leves e sem mensalidade de plataforma.</p></div>
+        <div class="card"><span class="tag">Diferencial 03</span><p><strong>Foco em conversão.</strong> Beleza com propósito, cada seção existe para levar ao contato.</p></div>
+      </div>
+    </section>
+
+    <!-- 03 -->
+    <section id="arquetipos">
+      <span class="sec__no">03 · ARQUÉTIPOS</span>
+      <h2 class="sec__title">Os arquétipos da marca</h2>
+      <p class="sec__intro">Arquétipos são a personalidade da marca, guiam como você fala, desenha e se comporta. A Malta combina dois arquétipos centrais com um temperamento de comunicação.</p>
+      <div class="grid2">
+        <div class="card"><span class="tag">Arquétipo primário</span><h3>O Criador</h3><p>O impulso de dar forma, construir do zero, cuidar do ofício e do detalhe. É o que aparece no <strong>visual</strong>: editorial, preciso, sofisticado. Referências do arquétipo: Apple, Lego, Adobe.</p><ul><li>Valoriza estética e execução impecável</li><li>Orgulho no "feito à mão", no detalhe</li><li>Mostra o processo e o cuidado</li></ul></div>
+        <div class="card"><span class="tag">Arquétipo secundário</span><h3>O Mago</h3><p>A promessa de transformação. É o que aparece na <strong>oferta</strong>: transformar cliques em clientes, marcas comuns em inesquecíveis. Referências: Disney, Dyson.</p><ul><li>Promete mudança de estado / resultado</li><li>Fala em "antes e depois"</li><li>Torna o complexo simples e mágico</li></ul></div>
+      </div>
+      <div class="callout">
+        <span class="tag">Temperamento de comunicação · O Cara Comum</span>
+        <p>No atendimento, a voz é acessível e próxima, nada de arrogância ou corporativês. É o "eai, bora fechar?". Esse equilíbrio é a assinatura da Malta: <strong>visual premium (Criador), promessa transformadora (Mago) e conversa de gente (Cara Comum).</strong></p>
+      </div>
+    </section>
+
+    <!-- 04 -->
+    <section id="visual">
+      <span class="sec__no">04 · IDENTIDADE VISUAL</span>
+      <h2 class="sec__title">Brandbook essencial</h2>
+      <p class="sec__intro">O núcleo visual da marca. Consistência aqui é o que faz a Malta parecer sólida e profissional em qualquer lugar.</p>
+
+      <h3 style="margin-bottom:14px">Logotipo</h3>
+      <div class="grid2" style="margin-bottom:16px">
+        <div class="card" style="display:flex;align-items:center;justify-content:center;min-height:150px;background:var(--bg)"><img src="data:image/png;base64,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" alt="Logo Malta" style="width:180px"></div>
+        <div class="card"><span class="tag">Uso do logo</span><ul><li>Wordmark "Malta" com o "M" em laço + "Business" espaçado abaixo</li><li>Versão principal: branco sobre fundo escuro</li><li>Manter área de respiro = altura do "M" ao redor</li><li>Tamanho mínimo legível: ~90px de largura</li><li>Nunca distorcer, rotacionar, aplicar sombra ou trocar a cor por gradiente</li></ul></div>
+      </div>
+
+      <h3 style="margin:26px 0 14px">Paleta</h3>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:#0a0a0a;border-bottom:1px solid var(--line)"></div><div class="info"><b>Preto Malta</b><span>#0A0A0A</span></div></div>
+        <div class="sw"><div class="chip" style="background:#151313"></div><div class="info"><b>Grafite</b><span>#151313</span></div></div>
+        <div class="sw"><div class="chip" style="background:#8d8d8a"></div><div class="info"><b>Cinza</b><span>#8D8D8A</span></div></div>
+        <div class="sw"><div class="chip" style="background:#f3f2ef"></div><div class="info"><b>Off-white</b><span>#F3F2EF</span></div></div>
+      </div>
+      <p style="color:var(--grey);font-size:.92rem;margin-top:14px">A marca é <strong>monocromática</strong> por escolha: sofisticação e foco. A regra de ouro, <strong>a cor só entra pelo trabalho do cliente</strong> (as fotos e as landing pages), nunca na identidade. Isso deixa o trabalho ser o protagonista.</p>
+
+      <h3 style="margin:26px 0 14px">Tipografia</h3>
+      <div class="specimen">
+        <div class="big">Aa <em>Archivo</em></div>
+        <div class="row-t"><span>Títulos: Archivo 800 / 900</span><span>Corpo: Archivo 400</span><span>Assinatura: peso bold + light na mesma frase</span></div>
+      </div>
+      <div class="specimen" style="margin-top:12px">
+        <div class="big" style="font-family:var(--mono);font-weight:500;font-size:clamp(1.6rem,4vw,2.6rem)">01 · JetBrains Mono</div>
+        <div class="row-t"><span>Labels, números, dados e detalhes técnicos</span><span>Sempre em MAIÚSCULAS com espaçamento</span></div>
+      </div>
+
+      <h3 style="margin:26px 0 14px">Estilo &amp; do / don't</h3>
+      <div class="dd">
+        <div class="col yes"><h4>Faça</h4><ul><li>Muito espaço em branco (respiro)</li><li>Linhas finas, numeração, labels em mono</li><li>Contraste de peso na tipografia</li><li>Preto e branco no layout; cor só nas imagens</li><li>Fotos em P&B editorial no institucional</li></ul></div>
+        <div class="col no"><h4>Evite</h4><ul><li>Cores na identidade / gradientes coloridos</li><li>Layout apertado e poluído</li><li>Fontes decorativas ou muitas famílias</li><li>Ícones genéricos e emojis no material formal</li><li>Travessão ", " nos textos (dá cara de IA)</li></ul></div>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section id="voz">
+      <span class="sec__no">05 · TOM DE VOZ</span>
+      <h2 class="sec__title">Como a Malta fala</h2>
+      <p class="sec__intro">A voz nasce dos arquétipos: precisa como o Criador, transformadora como o Mago, próxima como o Cara Comum.</p>
+      <div class="dd" style="margin-bottom:24px">
+        <div class="col yes"><h4>A voz é</h4><ul><li>Confiante e direta, sem enrolação</li><li>Calorosa e brasileira ("bora", "opa", "fechou")</li><li>Focada no resultado do cliente</li><li>Clara, explica o complexo de forma simples</li></ul></div>
+        <div class="col no"><h4>A voz não é</h4><ul><li>Corporativa engessada ou arrogante</li><li>Cheia de buzzword ("solução disruptiva")</li><li>Exagerada em superlativos vazios</li><li>Fria ou distante</li></ul></div>
+      </div>
+      <h3 style="margin-bottom:12px">Mensagens-chave</h3>
+      <div class="rows">
+        <div class="row"><div class="k">Tagline principal</div><div class="v lead-ink">"Sua marca merece ser inesquecível."</div></div>
+        <div class="row"><div class="k">Landing pages</div><div class="v">"Landing pages de alta performance, do clique ao cliente."</div></div>
+        <div class="row"><div class="k">Foto & vídeo</div><div class="v">"Imagens que contam a sua história."</div></div>
+        <div class="row"><div class="k">Fechamento</div><div class="v">"Eai, bora fechar?"</div></div>
+      </div>
+      <div class="callout">
+        <span class="tag">Pitch de elevador (30s)</span>
+        <p class="lead-ink" style="color:var(--ink);max-width:72ch">"Sou o João Pedro, o Malta. Designer e dev front end com 8 anos de experiência: crio landing pages de alta conversão e também produzo foto e vídeo. Junto o visual e o código pra transformar o clique do seu anúncio em cliente. Já são mais de 150 páginas no ar."</p>
+      </div>
+    </section>
+
+    <!-- 06 -->
+    <section id="provas">
+      <span class="sec__no">06 · PORTFÓLIO & PROVAS</span>
+      <h2 class="sec__title">O que dá credibilidade</h2>
+      <p class="sec__intro">Provas concretas para usar na apresentação, no site e no atendimento.</p>
+      <div class="grid3" style="margin-bottom:22px">
+        <div class="card"><span class="tag">Volume</span><div class="specimen" style="border:none;padding:0"><div class="big">+150</div></div><p style="margin-top:8px">landing pages no ar</p></div>
+        <div class="card"><span class="tag">Experiência</span><div class="specimen" style="border:none;padding:0"><div class="big">8 anos</div></div><p style="margin-top:8px">de mercado · formado pela UNA</p></div>
+        <div class="card"><span class="tag">Bagagem</span><div class="specimen" style="border:none;padding:0"><div class="big">QH4</div></div><p style="margin-top:8px">Growth · agência de marmorarias</p></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><span class="tag">Cases de landing page</span><ul><li>Marmoraria BR · Pedra Nobre Concept · Pedra Nobre Revestimentos</li><li>La Pietra · GVI Mármore (alto padrão em pedras)</li><li>Green Park Resort (imobiliário)</li><li>Condicionar Futuro (climatização)</li><li>Imersão Marmorizou (evento) · QH4 Stones (ads)</li></ul></div>
+        <div class="card"><span class="tag">Foto & vídeo (Malta Business)</span><ul><li>Esporte e society (fotografia esportiva)</li><li>Retrato e editorial</li><li>Produto e branding</li><li>Cobertura de eventos e bastidores</li></ul></div>
+      </div>
+      <div class="callout"><span class="tag">Nicho de especialista</span><p>A Malta tem autoridade real em <strong>marmorarias e negócios de pedras/alto padrão</strong>. Vale liderar com esse nicho: "sei falar a língua do seu mercado" vende mais que "faço para todos".</p></div>
+    </section>
+
+    <!-- 07 -->
+    <section id="planos">
+      <span class="sec__no">07 · SERVIÇOS & PLANOS</span>
+      <h2 class="sec__title">Oferta e investimento</h2>
+      <p class="sec__intro">Os três planos de landing page (valores de referência, o final depende do escopo) e o processo de trabalho.</p>
+      <div class="plans">
+        <div class="plan"><span class="nm">Essencial</span><div class="pr"><small>R$</small>1.350</div><div class="dl">7 a 10 dias · até 4 seções</div><p>Design, adaptação de textos, 1 revisão, responsiva, WhatsApp/form.</p></div>
+        <div class="plan feat"><span class="nm">Profissional · mais escolhido</span><div class="pr"><small>R$</small>2.500</div><div class="dl">10 a 15 dias · até 7 seções</div><p>Copywriting completo, animações, página de obrigado, 2 revisões, mensuração.</p></div>
+        <div class="plan"><span class="nm">Premium</span><div class="pr"><small>R$</small>4.500</div><div class="dl">15 a 25 dias · até 12 seções</div><p>Design premium, imagens de banco/IA, integrações, 3 revisões + ajustes após a publicação.</p></div>
+      </div>
+      <p style="color:var(--grey);font-size:.9rem;margin-top:14px">Adicionais: página extra (R$450), copywriting (R$500), ensaio foto/vídeo (R$270), integrações (R$350), rodada extra (R$400). Pacotes mensais sob consulta.</p>
+      <h3 style="margin:30px 0 4px">Processo de trabalho</h3>
+      <div class="steps">
+        <div class="step"><span class="n">01</span><div><h3>Briefing &amp; Estratégia</h3><p>Entender negócio, oferta, público e objetivo antes de desenhar.</p></div></div>
+        <div class="step"><span class="n">02</span><div><h3>Design &amp; Conteúdo</h3><p>Layout de alta conversão, copy e visual sob medida.</p></div></div>
+        <div class="step"><span class="n">03</span><div><h3>Desenvolvimento</h3><p>Código front end rápido, responsivo e otimizado.</p></div></div>
+        <div class="step"><span class="n">04</span><div><h3>Revisão &amp; Publicação</h3><p>Ajustes previstos no plano e página no ar, pronta para campanhas.</p></div></div>
+      </div>
+    </section>
+
+    <!-- 08 -->
+    <section id="pitch">
+      <span class="sec__no">08 · APRESENTAÇÃO COMERCIAL</span>
+      <h2 class="sec__title">Estrutura da apresentação (slide a slide)</h2>
+      <p class="sec__intro">Um roteiro pronto para montar no Canva/Figma/Keynote, mesma identidade deste documento. Cada slide com um único objetivo.</p>
+      <div class="steps">
+        <div class="step"><span class="n">01</span><div><h3>Capa</h3><p>Logo + "Sua marca merece ser inesquecível." Fundo preto, respiro.</p></div></div>
+        <div class="step"><span class="n">02</span><div><h3>Quem é a Malta</h3><p>Foto sua + bio curta (8 anos, design + dev + foto/vídeo, QH4).</p></div></div>
+        <div class="step"><span class="n">03</span><div><h3>O problema</h3><p>"Cliques que não viram clientes." A dor de investir em anúncio e a página não converter.</p></div></div>
+        <div class="step"><span class="n">04</span><div><h3>A solução</h3><p>Design + código + conteúdo num só lugar. O diferencial 3 em 1.</p></div></div>
+        <div class="step"><span class="n">05</span><div><h3>Como funciona</h3><p>As 4 etapas do processo, do briefing à publicação.</p></div></div>
+        <div class="step"><span class="n">06</span><div><h3>Portfólio</h3><p>Grid de mockups das LPs + amostras de foto/vídeo.</p></div></div>
+        <div class="step"><span class="n">07</span><div><h3>Provas &amp; números</h3><p>+150 páginas no ar, nicho de marmorarias, tempo de mercado.</p></div></div>
+        <div class="step"><span class="n">08</span><div><h3>Planos &amp; investimento</h3><p>Os 3 planos, com o Profissional em destaque.</p></div></div>
+        <div class="step"><span class="n">09</span><div><h3>Depoimentos</h3><p>Prints de clientes satisfeitos (colete a partir de agora).</p></div></div>
+        <div class="step"><span class="n">10</span><div><h3>Chamada final</h3><p>"Eai, bora fechar?" + WhatsApp, email e @. Um único CTA.</p></div></div>
+      </div>
+    </section>
+
+    <!-- 09 -->
+    <section id="scripts">
+      <span class="sec__no">09 · SCRIPTS DE ATENDIMENTO</span>
+      <h2 class="sec__title">Modelos de mensagem</h2>
+      <p class="sec__intro">Prontos para copiar e colar no WhatsApp, na voz da marca (próxima, direta, com foco no resultado). Troque o que está <span style="color:var(--grey)">[entre colchetes]</span>.</p>
+
+      <div class="msg"><div class="msg__h"><b>1. Primeiro contato (lead de anúncio)</b><span class="when">Responder em minutos</span></div><div class="msg__b">Opa, <span class="var">[nome]</span>! Aqui é o João Pedro, da Malta 👋
+Vi que você veio pela <span class="var">[campanha/Google]</span>. Me conta rapidinho: qual é o seu negócio e o que você quer que a página faça, gerar orçamento, agendamento, venda?
+Assim já te falo o melhor caminho.</div></div>
+
+      <div class="msg"><div class="msg__h"><b>2. Resposta a "quanto custa?"</b><span class="when">Ancorar valor antes do preço</span></div><div class="msg__b">Boa pergunta! Trabalho com 3 planos de landing page, começando em R$ 1.350 e indo até R$ 4.500 (o Premium, mais completo).
+O valor exato depende do tamanho da página e do que ela precisa. Posso te mandar um resumo dos planos ou, se preferir, te faço um orçamento sob medida, me conta um pouco mais do projeto?</div></div>
+
+      <div class="msg"><div class="msg__h"><b>3. Apresentar os planos</b><span class="when">Depois de entender a necessidade</span></div><div class="msg__b">Pelo que você me contou, faz sentido o plano <span class="var">[Profissional]</span>. Resumo:
+
+• Essencial, R$ 1.350 · página enxuta, entrega rápida
+• Profissional, R$ 2.500 · página completa, copy e animações (mais escolhido)
+• Premium, R$ 4.500 · tudo + imagens premium e integrações
+
+Todos são feitos em código próprio (rápidos e sem mensalidade de plataforma). Quer que eu já reserve uma data pra começar?</div></div>
+
+      <div class="msg"><div class="msg__h"><b>4. Objeção de preço</b><span class="when">Sem baixar o valor de cara</span></div><div class="msg__b">Entendo, <span class="var">[nome]</span>. Pensa assim: uma landing page bem feita é o que faz o dinheiro do seu anúncio virar cliente, em vez de ir pro lixo num clique perdido. É investimento, não custo.
+Se o orçamento tá apertado agora, dá pra começar pelo Essencial e evoluir depois, ou parcelar. Qual funciona melhor pra você?</div></div>
+
+      <div class="msg"><div class="msg__h"><b>5. Follow-up (sumiu)</b><span class="when">2 a 3 dias depois</span></div><div class="msg__b">Oi, <span class="var">[nome]</span>, tudo certo? 😊
+Só passando pra saber se você ainda quer tocar o projeto da landing page. Se tiver alguma dúvida ou quiser ver exemplos parecidos com o seu segmento, é só falar que te mando. Sem compromisso!</div></div>
+
+      <div class="msg"><div class="msg__h"><b>6. Fechamento</b><span class="when">Quando o cliente topa</span></div><div class="msg__b">Fechado, <span class="var">[nome]</span>! 🙌 Show de bola.
+Pra reservar sua data eu trabalho com 30% de entrada e o restante na entrega. Assim que confirmar, te mando o briefing (uns 5 minutinhos) e já começo. Bora fazer sua marca ser inesquecível!</div></div>
+
+      <div class="msg"><div class="msg__h"><b>7. Pós-entrega + indicação</b><span class="when">Após publicar</span></div><div class="msg__b">Prontinho, sua página tá no ar! 🚀 Foi um prazer trabalhar com você.
+Se puder me ajudar com duas coisas: (1) um feedback rapidinho de como foi a experiência e (2) se conhecer alguém que precisa de uma página ou de conteúdo, minha indicação é sempre bem-vinda. Qualquer ajuste dentro do combinado, é só chamar!</div></div>
+    </section>
+
+    <!-- 10 -->
+    <section id="autenticar">
+      <span class="sec__no">10 · AUTENTICAR A MARCA</span>
+      <h2 class="sec__title">Registrar, proteger e legitimar</h2>
+      <p class="sec__intro">"Autenticar" a Malta é torná-la oficial, protegida e reconhecível. Duas frentes: proteção legal e consistência de marca.</p>
+      <div class="grid2">
+        <div class="card"><span class="tag">Registro de marca · INPI</span><p>É o registro que garante o direito exclusivo sobre o nome "Malta Business" no Brasil.</p><ul><li>Faça a busca de anterioridade no site do INPI (ver se já existe)</li><li>Escolha as classes certas (Classificação de Nice): design/desenvolvimento web, publicidade/marketing e serviços de foto/vídeo</li><li>Registre como marca mista (nome + logo) para proteger os dois</li><li>Pedido pelo portal e-INPI, com pagamento de GRU</li></ul></div>
+        <div class="card"><span class="tag">Direitos autorais &amp; domínio</span><ul><li>Suas criações já têm direito autoral automático; guarde arquivos originais datados</li><li>Registre o domínio <strong>maltabusiness.com.br</strong> no registro.br</li><li>Garanta o @ igual em todas as redes (padroniza a busca)</li><li>Use email profissional (ex.: joaopedro@maltabusiness.com.br), passa autoridade</li></ul></div>
+      </div>
+      <div class="grid2" style="margin-top:18px">
+        <div class="card"><span class="tag">Consistência = autenticidade</span><ul><li>Use sempre o mesmo logo, cores e voz (este playbook é a fonte)</li><li>Assinatura visual igual em proposta, LP, redes e email</li><li>Tenha um kit de marca (logo em PNG/SVG, paleta, fontes) para reuso</li></ul></div>
+        <div class="card"><span class="tag">Sinais de legitimidade</span><ul><li>CNPJ ativo (63.593.320/0001-12) no rodapé e nas propostas</li><li>Portfólio público com cases reais e depoimentos</li><li>Contrato/proposta simples para cada projeto</li></ul></div>
+      </div>
+      <div class="callout"><span class="tag">Aviso</span><p>As orientações de registro (INPI, classes, contratos) são um guia geral, não aconselhamento jurídico. Para o registro de marca e contratos, vale contar com um advogado ou agente de propriedade industrial, evita erro de classe e pedido indeferido.</p></div>
+    </section>
+
+    <div class="foot">
+      Playbook Malta Business · Ed. 2026 v1<br>
+      João Pedro · joaopedrosegreto@gmail.com · @jp_fmalta · wa.me/553187637599<br>
+      CNPJ 63.593.320/0001-12 · Belo Horizonte / MG · Documento interno da marca
+    </div>
+  </main>
+</div>
+
+</body>
+</html>
