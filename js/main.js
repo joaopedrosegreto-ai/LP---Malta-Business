@@ -75,7 +75,14 @@
   function initNav() {
     const nav = document.getElementById('nav');
     const burger = document.getElementById('burger');
-    if (burger) burger.addEventListener('click', () => document.body.classList.toggle('menu-open'));
+    if (burger) burger.addEventListener('click', () => {
+      const open = document.body.classList.toggle('menu-open');
+      burger.setAttribute('aria-expanded', String(open));
+    });
+    document.querySelectorAll('#menu a').forEach(a => a.addEventListener('click', () => {
+      document.body.classList.remove('menu-open');
+      if (burger) burger.setAttribute('aria-expanded', 'false');
+    }));
     let last = 0;
     const onScroll = () => {
       const y = window.scrollY;
@@ -162,7 +169,7 @@
   function lps() {
     if (!gsap) return;
     gsap.utils.toArray('.lp').forEach((el) => {
-      gsap.from(el, {
+      el._rev = gsap.from(el, {
         scrollTrigger: { trigger: el, start: 'top 88%' },
         y: reduce ? 0 : 70, opacity: 0, duration: 1.1, ease: 'expo.out'
       });
@@ -242,6 +249,169 @@
     });
   }
 
+  /* ---------- SITES & LPs: filtro por categoria ---------- */
+  function lpFilter() {
+    const tabs = document.querySelectorAll('.lp-tab');
+    const cards = Array.from(document.querySelectorAll('.lp-grid .lp'));
+    if (!tabs.length || !cards.length) return;
+    const layout = () => {
+      const vis = cards.filter(c => !c.hidden);
+      cards.forEach(c => c.classList.remove('is-full'));
+      if (vis[0]) vis[0].classList.add('is-full');
+      if (vis.length > 1 && (vis.length - 1) % 2 === 1) vis[vis.length - 1].classList.add('is-full');
+    };
+    const apply = (key, animate) => {
+      tabs.forEach(t => t.setAttribute('aria-pressed', String(t.dataset.filter === key)));
+      cards.forEach(c => { c.hidden = !(key === 'all' || c.dataset.cat === key); });
+      layout();
+      if (!animate) return;
+      const vis = cards.filter(c => !c.hidden);
+      vis.forEach(c => { if (c._rev) { if (c._rev.scrollTrigger) c._rev.scrollTrigger.kill(); c._rev.progress(1).kill(); c._rev = null; } });
+      if (gsap && !reduce) gsap.fromTo(vis, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: .8, ease: 'expo.out', stagger: .06, clearProps: 'transform,opacity' });
+      if (ScrollTrigger) ScrollTrigger.refresh();
+    };
+    tabs.forEach(t => t.addEventListener('click', () => apply(t.dataset.filter, true)));
+    apply('all', false);
+  }
+
+  /* ---------- FOTOGRAFIA: carrossel (swipe nativo, setas, arrastar, teclado) ---------- */
+  function carousels() {
+    document.querySelectorAll('[data-carousel]').forEach(car => {
+      const track = car.querySelector('.shoot__track');
+      const slides = track.children;
+      const total = slides.length;
+      const prev = car.querySelector('[data-prev]');
+      const next = car.querySelector('[data-next]');
+      const count = car.querySelector('.shoot__count');
+      const pad = n => String(n).padStart(2, '0');
+      let current = 0;
+      const update = i => {
+        current = i;
+        if (count) count.textContent = pad(i + 1) + ' / ' + pad(total);
+        if (prev) prev.disabled = i === 0;
+        if (next) next.disabled = i === total - 1;
+      };
+      const go = i => {
+        i = Math.max(0, Math.min(total - 1, i));
+        track.scrollTo({ left: slides[i].offsetLeft, behavior: reduce ? 'auto' : 'smooth' });
+        update(i);
+      };
+      if (prev) prev.addEventListener('click', () => go(current - 1));
+      if (next) next.addEventListener('click', () => go(current + 1));
+      track.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(current + 1); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); go(current - 1); }
+      });
+      let raf = 0;
+      track.addEventListener('scroll', () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          const i = Math.round(track.scrollLeft / track.clientWidth);
+          if (i !== current) update(i);
+        });
+      }, { passive: true });
+      // arrastar com mouse no desktop (no touch o swipe é nativo)
+      let down = false, sx = 0, sl = 0;
+      track.addEventListener('pointerdown', e => {
+        if (e.pointerType !== 'mouse') return;
+        down = true; sx = e.clientX; sl = track.scrollLeft; track.classList.add('is-drag');
+      });
+      window.addEventListener('pointermove', e => { if (down) track.scrollLeft = sl - (e.clientX - sx); });
+      window.addEventListener('pointerup', e => {
+        if (!down) return;
+        down = false; track.classList.remove('is-drag');
+        const dx = e.clientX - sx;
+        go(dx < -50 ? current + 1 : dx > 50 ? current - 1 : current);
+      });
+      if (total < 2) car.querySelector('.shoot__btns').hidden = true;
+      update(0);
+    });
+  }
+
+  /* ---------- FOTOGRAFIA + FEEDBACKS: reveal ---------- */
+  function shootsReveal() {
+    if (!gsap) return;
+    gsap.utils.toArray('.shoot, .fb').forEach(el => {
+      gsap.from(el, {
+        scrollTrigger: { trigger: el, start: 'top 90%' },
+        y: reduce ? 0 : 60, opacity: 0, duration: 1, ease: 'expo.out'
+      });
+    });
+  }
+
+  /* ---------- CONTATO: formulário -> WhatsApp ---------- */
+  function contactForm() {
+    const form = document.getElementById('contact-form');
+    if (!form) return;
+    const WA = '553187637599';
+    const submit = form.querySelector('button[type="submit"]');
+    const f = {
+      nome: form.elements.nome, whatsapp: form.elements.whatsapp, email: form.elements.email,
+      servico: form.elements.servico, mensagem: form.elements.mensagem
+    };
+    const digits = v => (v || '').replace(/\D/g, '');
+    const mask = v => {
+      const d = digits(v).slice(0, 11);
+      if (d.length <= 2) return d.length ? '(' + d : '';
+      if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
+      if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+      return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+    };
+    const rules = {
+      nome: v => v.trim().length >= 2 ? '' : 'Digite seu nome.',
+      whatsapp: v => [10, 11].includes(digits(v).length) ? '' : 'Informe o WhatsApp com DDD.',
+      email: v => !v.trim() || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? '' : 'Esse e-mail parece incompleto.',
+      servico: v => v ? '' : 'Escolha uma opção.',
+      mensagem: v => v.trim().length >= 10 ? '' : 'Conte um pouco mais (mínimo 10 caracteres).'
+    };
+    const touched = {};
+    const err = k => rules[k](f[k].value || '');
+    const paint = k => {
+      const wrap = f[k].closest('.cfield');
+      const msg = touched[k] ? err(k) : '';
+      wrap.classList.toggle('is-invalid', !!msg);
+      f[k].setAttribute('aria-invalid', msg ? 'true' : 'false');
+      const out = wrap.querySelector('.cfield__err');
+      if (out) out.textContent = msg;
+    };
+    const valid = () => { const ok = Object.keys(rules).every(k => !err(k)); submit.disabled = !ok; return ok; };
+    f.whatsapp.addEventListener('input', () => { f.whatsapp.value = mask(f.whatsapp.value); });
+    Object.keys(f).forEach(k => {
+      f[k].addEventListener('blur', () => { touched[k] = true; paint(k); });
+      f[k].addEventListener('input', () => { if (touched[k]) paint(k); valid(); });
+      f[k].addEventListener('change', () => { touched[k] = true; paint(k); valid(); });
+    });
+    valid();
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      Object.keys(f).forEach(k => { touched[k] = true; paint(k); });
+      if (!valid()) { const bad = form.querySelector('[aria-invalid="true"]'); if (bad) bad.focus(); return; }
+      const sit = form.querySelector('input[name="situacao"]:checked');
+      const lines = ['Olá, Malta! Vim pelo site e quero um orçamento.', '',
+        '*Nome:* ' + f.nome.value.trim(), '*WhatsApp:* ' + f.whatsapp.value.trim()];
+      if (f.email.value.trim()) lines.push('*E-mail:* ' + f.email.value.trim());
+      lines.push('*Preciso de:* ' + f.servico.value);
+      if (sit) lines.push('*Situação:* ' + sit.value);
+      lines.push('', '*Mensagem:*', f.mensagem.value.trim());
+      const url = `https://wa.me/${WA}?text=${encodeURIComponent(lines.join('\n'))}`;
+      submit.disabled = true;
+      submit.querySelector('span').textContent = 'Abrindo o WhatsApp…';
+      try { sessionStorage.setItem('malta:wa', url); } catch (x) {}
+      // sem 'noopener' na feature string: com ele o retorno é sempre null e não dá pra detectar bloqueio
+      const win = window.open(url, '_blank');
+      if (!win) { window.location.href = url; return; }
+      try { win.opener = null; } catch (x) {}
+      window.location.href = 'obrigado/';
+    });
+  }
+
+  /* ---------- OBRIGADO: reabrir a mensagem montada ---------- */
+  function thanks() {
+    const a = document.querySelector('[data-wa-retry]');
+    if (!a) return;
+    try { const u = sessionStorage.getItem('malta:wa'); if (u && u.indexOf('https://wa.me/553187637599') === 0) a.href = u; } catch (x) {}
+  }
+
   /* ---------- CONTENT / IMAGE PROTECTION (deterrents) ----------
      Nota: código front-end é sempre baixado pelo navegador; isto dificulta
      a cópia casual (salvar imagem, arrastar, "ver código fonte"), não é
@@ -277,8 +447,13 @@
     reveals();
     statement();
     marquee();
+    lpFilter();
     lps();
     grid();
+    carousels();
+    shootsReveal();
+    contactForm();
+    thanks();
     process();
     services();
     about();
