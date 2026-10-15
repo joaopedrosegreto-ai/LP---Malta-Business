@@ -1,92 +1,119 @@
-# Malta — Portfólio (João Pedro)
+# Malta Business · site de portfólio
 
-Site de portfólio pessoal com identidade **Malta Business** (monocromática, editorial) e
-animações de scroll no estilo do site de referência — feito com **HTML/CSS/JS puro + GSAP,
-ScrollTrigger e Lenis** (smooth scroll). Totalmente responsivo.
+Site de **João Pedro (Malta)**: fotografia, sites e landing pages.
+Estático (HTML/CSS/JS puro, sem dependências), pronto para a Vercel.
 
-## Como rodar localmente
-O site usa `fetch`/módulos de forma simples, mas o ideal é servir por HTTP (não abrir o
-`index.html` direto pelo `file://`, para as fontes/assets carregarem certinho):
+- Produção atual: https://maltabusiness.vercel.app/
+- Branch deste trabalho: `site-portfolio` (a `main` continua com a LP antiga até você aprovar)
 
-```bash
-cd site
-python3 -m http.server 5544
-```
-
-Depois abra: http://localhost:5544
-
-> Alternativa: extensão "Live Server" do VS Code.
-
-## Publicar (gratuito)
-É um site estático — dá pra publicar em qualquer um destes, só arrastar a pasta `site/`:
-- **Netlify** (netlify.com/drop) — arrasta a pasta e pronto
-- **Vercel** — `vercel` na pasta
-- **GitHub Pages** — commit + ativar Pages
+---
 
 ## Estrutura
+
 ```
-site/
-├── index.html          # conteúdo + textos (edite aqui as LPs, projetos e a bio)
-├── css/style.css       # visual (cores, tipografia, layout, responsivo)
-├── js/main.js          # animações (GSAP + ScrollTrigger + Lenis)
-├── js/vendor/          # GSAP, ScrollTrigger e Lenis (locais, sem CDN)
-└── assets/
-    ├── logo-malta.png      # seu logo (extraído do PDF)
-    ├── about.webp          # foto "Sobre" (retrato)
-    ├── favicon.png
-    ├── lp/*.webp           # screenshots das 10 landing pages (seção primária)
-    └── portfolio/01..10.webp # 10 fotos do Instagram (@jp_fmalta), "Outros trabalhos"
+/
+├── index.html                    # Home: hero, serviços, destaques web e foto, processo, feedbacks, sobre, CTA
+├── fotografia/index.html         # Projetos de foto (card com carrossel + texto)
+├── sites-e-landing-pages/        # 14 projetos web com filtro: Sites · Landing Pages · Outros nichos
+├── sobre/index.html
+├── contato/index.html            # Formulário → WhatsApp
+├── obrigado/index.html           # Pós-envio (noindex)
+├── 404.html                      # Página de erro personalizada
+├── robots.txt · sitemap.xml · site.webmanifest · vercel.json
+├── assets/
+│   ├── css/site.css              # Todo o visual (tokens de cor no :root)
+│   ├── js/site.js                # Header, menu mobile, reveal, carrossel, filtros, formulário
+│   └── img/
+│       ├── brand/                # logo-malta.png, about.webp (foto do Sobre)
+│       ├── icons/                # favicon, apple-touch-icon, ícones do manifest
+│       ├── og/og-cover.jpg       # Imagem de compartilhamento (1200×630)
+│       ├── projetos/             # Prints: <slug>.webp (desktop 1280×800) e <slug>_mob.webp (420×909)
+│       └── fotos/<projeto>/      # 01.webp, 02.webp, ... uma pasta por ensaio
+├── tools/build-pages.mjs         # Gerador das páginas (dados dos projetos + header/footer/SEO)
+│
+│   (legado, mantido sem alterações)
+├── landing-page/                 # Página "Planos" antiga, usa css/ e js/ da raiz
+├── playbook/ · Malta-Playbook.html · encrypt-playbook.py
+└── css/ · js/ · assets/*.png     # Arquivos usados só pelas páginas legadas
 ```
 
-## Performance
-Otimizado para pontuar alto no PageSpeed/Lighthouse: imagens em **WebP** + `lazy-load` +
-`width/height` (sem layout shift), **GSAP/Lenis locais com `defer`** (sem CDN de terceiros),
-fontes enxutas e carregadas de forma **não-bloqueante**. Ao publicar em Netlify/Vercel você
-ainda ganha **gzip/brotli, CDN e cache** automáticos, o que melhora ainda mais as notas.
+### Como editar
 
-## Seções
-1. **Landing Pages** (primária) — mockups de navegador com screenshot de cada página + link ao vivo
-2. **Outros trabalhos** — grid de foto/vídeo (Malta Business)
-3. **Serviços** — processo (horizontal no desktop, stack vertical no mobile) + lista
-4. **Sobre** e **Footer/Contato**
+As páginas são geradas por `tools/build-pages.mjs` (Node 18+, sem `npm install`).
+Projetos, textos das fotos, menu, rodapé e SEO ficam nesse arquivo. Depois de editar:
 
-## Atualizar o screenshot de uma landing page
-As imagens em `assets/lp/` são prints das páginas. Para atualizar uma, gere um novo print
-(1440×900) e substitua o arquivo com o mesmo nome. Ex. via Chrome headless:
 ```bash
-"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new \
-  --hide-scrollbars --window-size=1440,900 --virtual-time-budget=9000 \
-  --screenshot=assets/lp/marmorariabr.jpg "https://www.marmorariabr.com.br/"
+node tools/build-pages.mjs
 ```
 
-## O que você pode ajustar rápido
-- **Nomes/tipos dos projetos:** em `index.html`, blocos `<article class="card">`
-  (troque `<h3>`, `.card__type` e `data-cat`). Os nomes atuais são sugestões.
-- **Foto do "Sobre":** substitua `assets/about.jpg` por uma foto sua em alta resolução
-  (proporção ~4/5). A atual veio do avatar do Instagram (baixa resolução).
-- **Headline do hero / bio:** em `index.html`, seções `.hero` e `.about`.
-- **Cores:** em `css/style.css`, bloco `:root` (tudo em tons de preto/branco/cinza).
+> Se preferir editar o HTML na mão, tudo bem, mas aí não rode o gerador de novo, porque ele sobrescreve as páginas.
 
-## Segurança
-**Importante:** o HTML/CSS/JS de qualquer site público é sempre baixado pelo navegador de
-quem acessa — não existe forma de impedir 100% que alguém veja o código. O que dá pra fazer
-(e está feito) são duas camadas:
+**Adicionar fotos a um ensaio:** coloque `03.webp`, `04.webp`... em `assets/img/fotos/<projeto>/` e rode o gerador. O carrossel pega todas as imagens da pasta.
+Use fotos em **retrato 4:5 ou 3:4**, com ~1200 px no lado maior e em WebP (as atuais têm 480×640 e vieram do Instagram, então troque por versões em alta).
 
-**1. Segurança real (cabeçalhos + CSP)** — arquivos já incluídos, aplicam no deploy:
-- `_headers` → Netlify · `vercel.json` → Vercel · `.htaccess` → Apache/cPanel
-- **Content-Security-Policy**: só carrega recursos do próprio site (bloqueia injeção de scripts/XSS e exfiltração de dados para fora).
-- **X-Frame-Options / frame-ancestors: DENY**: ninguém consegue embutir seu site num iframe (anti-clickjacking / roubo por enquadramento).
-- **HSTS**: força HTTPS. **nosniff**, **Referrer-Policy**, **Permissions-Policy** (desliga câmera/mic/localização), **COOP/CORP**.
-- `.htaccess` ainda bloqueia listagem de diretório e acesso a arquivos internos.
+**Novo ensaio:** crie a pasta em `assets/img/fotos/` e adicione um item em `SHOOTS` no gerador.
 
-**2. Dissuasores de cópia (em `js/main.js`, função `protect()`):** desabilita botão direito,
-arrastar/salvar imagem e atalhos de salvar página / ver código fonte. Trava o usuário casual —
-**não é proteção absoluta** (quem entende contorna). Para desligar, remova a chamada `protect()`.
+**Novo projeto web:** salve os prints em `assets/img/projetos/<slug>.webp` (1280×800) e `<slug>_mob.webp` (420×909) e adicione o projeto no grupo certo em `GROUPS`.
 
-> Não há coleta de dados no site (sem formulários/login) — os contatos são links diretos de
-> WhatsApp/e-mail, então não há dados de usuário para vazar. A proteção real do seu trabalho é
-> jurídica (direito autoral, automático no Brasil), não técnica.
+---
+
+## Como publicar (Vercel)
+
+1. Revise a branch `site-portfolio` no preview da Vercel (cada push gera uma URL de preview).
+2. Aprovou? Faça o merge da `site-portfolio` na `main`. A Vercel publica sozinha.
+3. Se mudar de domínio, troque `SITE` em `tools/build-pages.mjs`, rode o gerador e atualize `robots.txt`.
+
+Rodar localmente:
+```bash
+python3 -m http.server 5544
+```
+e abra http://localhost:5544 (precisa ser via servidor, por causa dos caminhos absolutos `/assets/...`).
+
+`vercel.json` já tem: `cleanUrls`, barra final, redirecionamentos (`/portfolio`, `/projetos`, `/fotos`), cabeçalhos de segurança (CSP, HSTS, X-Frame-Options...) e cache longo para imagens. `.vercelignore` tira `tools/`, `.py`, `.zip` e este README do deploy.
+
+---
+
+## Pendências (fazer antes de publicar na main)
+
+- [ ] **Feedbacks:** os 3 cards na home são placeholders marcados com `<!-- EDITAR -->` e o selo "Espaço reservado". Troque por depoimentos reais (nome, empresa, texto e foto opcional em `assets/img/feedbacks/`) e remova a classe `quote--placeholder` e o `.ph-flag`. Se ainda não tiver depoimentos, apague a seção e o link "Feedbacks" do menu (`NAV` no gerador).
+- [ ] **Fotografia:** os textos dos 5 ensaios (título, tipo, proposta, entrega) são **provisórios**, escritos a partir das fotos. Corrija com os dados reais (cliente, tipo de ensaio) em `SHOOTS`.
+- [ ] **Fotos em alta:** as 10 fotos atuais vieram do Instagram em 480×640. Envie as originais (o acesso ao Instagram não foi feito nesta etapa; foram reaproveitadas as fotos que já estavam no repositório).
+- [ ] **Foto do Sobre:** `assets/img/brand/about.webp` é a mesma da LP antiga; troque se tiver uma melhor.
+- [ ] **Confirmar textos dos projetos web:** cada frase de objetivo foi escrita a partir do conteúdo público do site, sem números nem resultados. Revise se o nicho/cidade estão certos.
+- [ ] **Autorização dos clientes:** confirme que pode exibir cada projeto (principalmente os feitos via agência).
+- [ ] Depois do deploy: enviar `sitemap.xml` no Google Search Console e testar o link no [validador de rich results](https://search.google.com/test/rich-results).
+
+---
+
+## Checklist de SEO
+
+| Item | Status |
+|---|---|
+| `<title>` e `meta description` únicos por página | ✔ |
+| `canonical` absoluto em todas as páginas | ✔ |
+| Open Graph (title, description, url, image 1200×630, locale) | ✔ |
+| Twitter Card `summary_large_image` | ✔ |
+| JSON-LD: `ProfessionalService`, `Person`, `WebSite`, `BreadcrumbList`, `CollectionPage`/`ItemList` de projetos, `AboutPage`, `ContactPage` | ✔ |
+| `robots.txt` com sitemap; `/obrigado/` e `/playbook/` bloqueados | ✔ |
+| `sitemap.xml` com as 5 páginas indexáveis | ✔ |
+| `site.webmanifest` + ícones 192/512 + apple-touch-icon + favicon | ✔ |
+| `width`/`height` em todas as imagens (sem CLS) | ✔ |
+| `preload` da imagem do hero com `fetchpriority="high"` | ✔ |
+| Imagens WebP com `loading="lazy"` abaixo da dobra | ✔ |
+| Um único `<h1>` por página, hierarquia de títulos | ✔ |
+| `alt` descritivo em todas as imagens | ✔ |
+| `lang="pt-BR"`, `theme-color`, viewport sem bloquear zoom | ✔ |
+| Páginas separadas por área (URLs indexáveis próprias) | ✔ |
+| 404 personalizada e página de obrigado com `noindex` | ✔ |
+| HTML validado (html-validate, 0 erros) | ✔ |
+
+## Acessibilidade e comportamento
+
+- Link "Pular para o conteúdo", foco visível, menu mobile com `aria-expanded`, `inert` quando fechado e fechamento com Esc.
+- Carrossel: arrastar no celular (scroll-snap), arrastar com mouse no desktop, setas, bolinhas e teclado (← →).
+- Filtro de projetos com `aria-pressed` e link direto por âncora (`/sites-e-landing-pages/#landing-pages`).
+- Formulário: rótulos visíveis, máscara de telefone, erro abaixo do campo depois que você sai dele, botão desabilitado até os obrigatórios estarem válidos. O envio monta a mensagem, abre o WhatsApp em nova aba e leva para `/obrigado/`. Se o navegador bloquear a nova aba, abre o WhatsApp na mesma aba.
+- `prefers-reduced-motion` desliga as animações.
 
 ## Contato configurado
-WhatsApp 31 8763-7599 · joaopedrosegreto@gmail.com · @jp_fmalta ·
-Behance/joaopedromalta · LinkedIn/joaopedromalta7 · CNPJ 63.593.320/0001-12
+WhatsApp +55 31 8763-7599 · joaopedrosegreto@gmail.com · @jp_fmalta · Behance/joaopedromalta · LinkedIn/joaopedromalta7 · CNPJ 63.593.320/0001-12

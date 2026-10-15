@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /obrigado/
+Disallow: /playbook/
+Disallow: /Malta-Playbook.html
+
+Sitemap: https://maltabusiness.vercel.app/sitemap.xml
