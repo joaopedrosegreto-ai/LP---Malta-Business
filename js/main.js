@@ -412,6 +412,85 @@
     try { const u = sessionStorage.getItem('malta:wa'); if (u && u.indexOf('https://wa.me/553187637599') === 0) a.href = u; } catch (x) {}
   }
 
+  /* ---------- PLANOS: preço borrado -> popup com formulário -> WhatsApp ---------- */
+  function priceModal() {
+    const dlg = document.getElementById('price-modal');
+    const form = document.getElementById('price-form');
+    if (!dlg || !form) return;
+    const planOut = dlg.querySelector('[data-plan]');
+    const submit = form.querySelector('button[type="submit"]');
+    const f = { nome: form.elements.nome, whatsapp: form.elements.whatsapp, negocio: form.elements.negocio };
+    const digits = v => (v || '').replace(/\D/g, '');
+    const mask = v => {
+      const d = digits(v).slice(0, 11);
+      if (d.length <= 2) return d.length ? '(' + d : '';
+      if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
+      if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+      return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+    };
+    const rules = {
+      nome: v => v.trim().length >= 2 ? '' : 'Digite seu nome.',
+      whatsapp: v => [10, 11].includes(digits(v).length) ? '' : 'Informe o WhatsApp com DDD.',
+      negocio: v => v.trim().length >= 2 ? '' : 'Conte qual é o seu negócio.'
+    };
+    const touched = {};
+    const err = k => rules[k](f[k].value || '');
+    const paint = k => {
+      const wrap = f[k].closest('.cfield');
+      const msg = touched[k] ? err(k) : '';
+      wrap.classList.toggle('is-invalid', !!msg);
+      f[k].setAttribute('aria-invalid', msg ? 'true' : 'false');
+      wrap.querySelector('.cfield__err').textContent = msg;
+    };
+    const valid = () => { const ok = Object.keys(rules).every(k => !err(k)); submit.disabled = !ok; return ok; };
+    f.whatsapp.addEventListener('input', () => { f.whatsapp.value = mask(f.whatsapp.value); });
+    Object.keys(f).forEach(k => {
+      f[k].addEventListener('blur', () => { touched[k] = true; paint(k); });
+      f[k].addEventListener('input', () => { if (touched[k]) paint(k); valid(); });
+    });
+
+    let lastTrigger = null;
+    const open = (plan, trigger) => {
+      lastTrigger = trigger;
+      form.elements.plano.value = plan;
+      planOut.textContent = plan;
+      valid();
+      if (lenis) lenis.stop();
+      document.body.classList.add('modal-open');
+      if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+      setTimeout(() => f.nome.focus(), 60);
+    };
+    const close = () => { if (dlg.open) dlg.close(); };
+    dlg.addEventListener('close', () => {
+      if (lenis) lenis.start();
+      document.body.classList.remove('modal-open');
+      if (lastTrigger) lastTrigger.focus();
+    });
+    document.querySelectorAll('[data-price]').forEach(b => b.addEventListener('click', () => open(b.dataset.price, b)));
+    dlg.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', close));
+    // clique fora da caixa fecha
+    dlg.addEventListener('click', e => { if (e.target === dlg) close(); });
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      Object.keys(f).forEach(k => { touched[k] = true; paint(k); });
+      if (!valid()) { const bad = form.querySelector('[aria-invalid="true"]'); if (bad) bad.focus(); return; }
+      const lines = ['Olá, Malta! Quero saber o valor de: *' + form.elements.plano.value + '*', '',
+        '*Nome:* ' + f.nome.value.trim(), '*WhatsApp:* ' + f.whatsapp.value.trim(), '*Negócio:* ' + f.negocio.value.trim()];
+      const extra = form.elements.mensagem.value.trim();
+      if (extra) lines.push('', '*Mensagem:*', extra);
+      const url = 'https://wa.me/553187637599?text=' + encodeURIComponent(lines.join('\n'));
+      submit.disabled = true;
+      submit.querySelector('span').textContent = 'Abrindo o WhatsApp…';
+      try { sessionStorage.setItem('malta:wa', url); } catch (x) {}
+      // sem 'noopener' na feature string: com ele o retorno é sempre null e não dá pra detectar bloqueio
+      const win = window.open(url, '_blank');
+      if (!win) { window.location.href = url; return; }
+      try { win.opener = null; } catch (x) {}
+      window.location.href = '../obrigado/';
+    });
+  }
+
   /* ---------- CONTENT / IMAGE PROTECTION (deterrents) ----------
      Nota: código front-end é sempre baixado pelo navegador; isto dificulta
      a cópia casual (salvar imagem, arrastar, "ver código fonte"), não é
@@ -453,6 +532,7 @@
     carousels();
     shootsReveal();
     contactForm();
+    priceModal();
     thanks();
     process();
     services();
