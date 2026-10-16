@@ -844,7 +844,7 @@ body.menu-open .wa-float{opacity:0;pointer-events:none}
 .plan__promo s.is-blur{filter:blur(4px)}
 
 .plan__reveal{
-  display:block;width:100%;text-align:left;position:relative;cursor:pointer;
+  display:block;color:inherit;width:100%;text-align:left;position:relative;cursor:pointer;
   border-radius:10px;margin:0 -8px;padding:4px 8px 8px;width:calc(100% + 16px);
   transition:background .4s var(--ease);
 }
@@ -872,38 +872,6 @@ body.menu-open .wa-float{opacity:0;pointer-events:none}
 .addon__reveal i{font-style:normal;color:var(--white);border-bottom:1px solid var(--line-2);transition:border-color .3s}
 .addon__reveal:hover i{border-color:var(--white)}
 
-/* popup */
-.pmodal{
-  border:0;padding:0;background:transparent;color:var(--white);
-  width:min(560px,calc(100% - 32px));max-width:none;max-height:calc(100dvh - 32px);margin:auto;overflow:visible;
-}
-.pmodal::backdrop{background:rgba(10,10,10,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-.pmodal[open]{animation:pmIn .5s var(--ease)}
-.pmodal[open]::backdrop{animation:pmFade .4s ease}
-@keyframes pmIn{from{opacity:0;transform:translateY(24px) scale(.98)}to{opacity:1;transform:none}}
-@keyframes pmFade{from{opacity:0}to{opacity:1}}
-.pmodal__box{
-  position:relative;background:var(--bg-2);border:1px solid var(--line-2);border-radius:12px;
-  padding:clamp(26px,4vw,40px);max-height:calc(100dvh - 32px);overflow:auto;overscroll-behavior:contain;
-}
-.pmodal__close{
-  position:absolute;top:14px;right:14px;width:44px;height:44px;border-radius:50%;
-  border:1px solid var(--line-2);font-size:22px;line-height:1;color:var(--white);
-  display:flex;align-items:center;justify-content:center;transition:.4s var(--ease);
-}
-.pmodal__close:hover{background:var(--white);color:var(--bg);border-color:var(--white)}
-.pmodal__title{font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(1.6rem,3.6vw,2.3rem);
-  line-height:1.05;letter-spacing:-.02em;margin:16px 44px 12px 0}
-.pmodal__title span{color:var(--grey)}
-.pmodal__lead{color:var(--grey);line-height:1.55;margin-bottom:26px}
-.pmodal .cform{gap:22px}
-.pmodal .cform__foot{margin-top:4px}
-.pmodal .cform__foot .btn{width:100%;justify-content:center}
-body.modal-open{overflow:hidden}
-body.modal-open .wa-float{opacity:0;pointer-events:none}
-@media (prefers-reduced-motion:reduce){.pmodal[open],.pmodal[open]::backdrop{animation:none}}
-@media (max-width:640px){
-  .pmodal .cform{gap:14px}
-  .pmodal__lead{margin-bottom:16px}
-  .pmodal textarea{min-height:64px}
-}
+
+/* preço "de" visível como âncora */
+.plan__promo s{font-size:14px;color:var(--white);opacity:.65}
