@@ -12,7 +12,7 @@
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Content-protection deterrents — active immediately (defined below, hoisted)
-  try { protect(); } catch (e) {}
+  // protect() desligado: bloquear botão direito/atalhos atrapalha quem quer abrir projetos em nova aba
   const gsap = window.gsap;
   const ScrollTrigger = window.ScrollTrigger;
   if (gsap && ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
@@ -24,11 +24,11 @@
     let finished = false;
     const finish = () => { if (finished) return; finished = true; if (loader) loader.style.display = 'none'; done(); };
     // Hard safety net: never trap the site behind the loader (e.g. throttled rAF)
-    const safety = setTimeout(finish, 2000);
+    const safety = setTimeout(finish, 1200);
     if (!loader || !gsap || reduce) { clearTimeout(safety); finish(); return; }
     gsap.timeline({ onComplete: finish })
-      .to(bar, { width: '100%', duration: .8, ease: 'power2.inOut' })
-      .to(loader, { yPercent: -100, duration: .7, ease: 'expo.inOut' }, '+=0.05');
+      .to(bar, { width: '100%', duration: .35, ease: 'power2.inOut' })
+      .to(loader, { yPercent: -100, duration: .5, ease: 'expo.inOut' }, '+=0.02');
   }
 
   /* ---------- LENIS smooth scroll ---------- */
@@ -484,5 +484,5 @@
   window.addEventListener('load', startOnce);
   if (document.readyState === 'complete') startOnce();
   // final guarantee even if 'load' is delayed by assets
-  setTimeout(startOnce, 3000);
+  setTimeout(startOnce, 1500);
 })();

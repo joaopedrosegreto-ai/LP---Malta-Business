@@ -8,7 +8,7 @@
   --bg-2:      #0f0f0f;
   --white:     #f3f2ef;
   --grey:      #8d8d8a;
-  --grey-2:    #5a5a58;
+  --grey-2:    #7d7d7a; /* era #5a5a58: contraste 4.8:1 sobre o fundo (acessibilidade) */
   --line:      rgba(243,242,239,.12);
   --line-2:    rgba(243,242,239,.22);
   --inverse:   #f3f2ef;
