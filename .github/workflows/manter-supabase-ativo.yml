@@ -1,0 +1,17 @@
+name: Manter Supabase ativo
+
+on:
+  schedule:
+    - cron: "0 12 * * *"   # todo dia, 9h de Brasília
+  workflow_dispatch:        # botão pra rodar na mão
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Consulta leve no banco
+        run: |
+          curl -fsS -X POST "https://jjannlhkfkujbluwmwvz.supabase.co/rest/v1/rpc/buscar_proposta" \
+            -H "apikey: sb_publishable_J9TMex4lQpMLmkwgVYwxWw_KdTQEDwB" \
+            -H "Content-Type: application/json" \
+            -d '{"p_email":"keepalive@malta.dev","p_tel":"31900000000"}'
