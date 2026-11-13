@@ -138,6 +138,11 @@
 </section>
 
 <!-- PLANOS -->
+<!-- BLACK FRIDAY: faixas somem sozinhas depois de 01/12 (js/main.js, blackFriday) -->
+<div class="black-tape black-tape--top" data-black aria-hidden="true">
+  <div class="black-tape__band black-tape__band--a"><div class="black-tape__track"><span>Black Friday</span><i>✱</i><span>Até 70% OFF em sites e LPs</span><i>✱</i><span>Cupom BLACKLP26</span><i>✱</i><span>Só até 01/12</span><i>✱</i><span>Black Friday</span><i>✱</i><span>Até 70% OFF em sites e LPs</span><i>✱</i><span>Cupom BLACKLP26</span><i>✱</i><span>Só até 01/12</span><i>✱</i><span>Black Friday</span><i>✱</i><span>Até 70% OFF em sites e LPs</span><i>✱</i><span>Cupom BLACKLP26</span><i>✱</i><span>Só até 01/12</span><i>✱</i><span>Black Friday</span><i>✱</i><span>Até 70% OFF em sites e LPs</span><i>✱</i><span>Cupom BLACKLP26</span><i>✱</i><span>Só até 01/12</span><i>✱</i></div></div>
+  <div class="black-tape__band black-tape__band--b"><div class="black-tape__track"><span>Black Friday</span><i>✱</i><span>Até 70% OFF em sites e LPs</span><i>✱</i><span>Cupom BLACKLP26</span><i>✱</i><span>Só até 01/12</span><i>✱</i><span>Black Friday</span><i>✱</i><span>Até 70% OFF em sites e LPs</span><i>✱</i><span>Cupom BLACKLP26</span><i>✱</i><span>Só até 01/12</span><i>✱</i><span>Black Friday</span><i>✱</i><span>Até 70% OFF em sites e LPs</span><i>✱</i><span>Cupom BLACKLP26</span><i>✱</i><span>Só até 01/12</span><i>✱</i><span>Black Friday</span><i>✱</i><span>Até 70% OFF em sites e LPs</span><i>✱</i><span>Cupom BLACKLP26</span><i>✱</i><span>Só até 01/12</span><i>✱</i></div></div>
+</div>
 <section class="sec" id="planos">
   <div class="sec__head">
     <span class="eyebrow">Planos e investimento</span>
@@ -236,6 +241,7 @@
     </article>
   </div>
 
+  <div class="black-tape black-tape--mid" data-black aria-hidden="true"><div class="black-tape__band black-tape__band--a"><div class="black-tape__track"><span>Black Friday</span><i>✱</i><span>Até 70% OFF em sites e LPs</span><i>✱</i><span>Cupom BLACKLP26</span><i>✱</i><span>Só até 01/12</span><i>✱</i><span>Black Friday</span><i>✱</i><span>Até 70% OFF em sites e LPs</span><i>✱</i><span>Cupom BLACKLP26</span><i>✱</i><span>Só até 01/12</span><i>✱</i><span>Black Friday</span><i>✱</i><span>Até 70% OFF em sites e LPs</span><i>✱</i><span>Cupom BLACKLP26</span><i>✱</i><span>Só até 01/12</span><i>✱</i><span>Black Friday</span><i>✱</i><span>Até 70% OFF em sites e LPs</span><i>✱</i><span>Cupom BLACKLP26</span><i>✱</i><span>Só até 01/12</span><i>✱</i></div></div></div>
   <h3 class="plans__label"><span>02</span> Sites <em>· preço por páginas</em></h3>
   <div class="plans plans--4">
     <!-- Essencial · Site -->
@@ -355,6 +361,24 @@
 </section>
 
 </main>
+
+<!-- POPUP BLACK FRIDAY: abre 1x por visita quando a área de planos aparece; some depois de 01/12 -->
+<dialog class="bmodal" id="black-modal" aria-labelledby="bm-title" data-black>
+  <div class="bmodal__box">
+    <button type="button" class="bmodal__close" data-close aria-label="Fechar" data-cursor>×</button>
+    <span class="bmodal__eyebrow">Black Friday ✱ só até 01/12</span>
+    <h2 class="bmodal__title" id="bm-title">Até <b>70% OFF</b><br>em sites e landing pages.</h2>
+    <p class="bmodal__lead">Use o cupom abaixo na conversa pelo WhatsApp e garanta o desconto no seu projeto.</p>
+    <div class="bmodal__coupon">
+      <span class="bmodal__code" id="black-code">BLACKLP26</span>
+      <button type="button" class="bmodal__copy" data-copy="BLACKLP26" data-cursor>Copiar cupom</button>
+    </div>
+    <p class="bmodal__timer" data-black-timer>Termina em breve</p>
+    <a class="btn btn--solid bmodal__cta" href="https://wa.me/553187637599?text=Ol%C3%A1%2C%20Malta%21%20Quero%20usar%20o%20cupom%20BLACKLP26%20da%20Black%20Friday%20%28at%C3%A9%2070%25%20de%20desconto%29.%20Pode%20me%20passar%20os%20valores%3F" target="_blank" rel="noopener" data-track="black_cupom" data-cursor><span>Usar cupom no WhatsApp</span><i>→</i></a>
+    <button type="button" class="bmodal__later" data-close data-cursor>Ver os planos primeiro</button>
+  </div>
+</dialog>
+
 
 
 

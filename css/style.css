@@ -875,3 +875,71 @@ body.menu-open .wa-float{opacity:0;pointer-events:none}
 
 /* preço "de" visível como âncora */
 .plan__promo s{font-size:14px;color:var(--white);opacity:.65}
+
+/* ============================================================
+   BLACK FRIDAY (até 01/12): faixas animadas + popup do cupom
+   ============================================================ */
+.black-tape{position:relative;overflow:hidden;pointer-events:none;user-select:none}
+.black-tape--top{height:150px;margin-top:4vh}
+.black-tape--mid{height:64px;margin:20px calc(var(--gutter) * -1) 60px}
+.black-tape__band{position:absolute;left:-5%;width:110%;padding:14px 0;white-space:nowrap;overflow:hidden}
+.black-tape--top .black-tape__band--a{top:28px;transform:rotate(-2.2deg);background:var(--white);color:var(--bg);z-index:2}
+.black-tape--top .black-tape__band--b{top:66px;transform:rotate(1.8deg);background:var(--bg);color:var(--white);border-block:1px solid var(--line-2)}
+.black-tape--mid .black-tape__band--a{top:8px;transform:rotate(-1deg);background:var(--white);color:var(--bg)}
+.black-tape__track{display:inline-flex;align-items:center;will-change:transform;animation:tapeL 32s linear infinite}
+.black-tape__band--b .black-tape__track{animation-name:tapeR;animation-duration:38s}
+.black-tape__track span{
+  font-family:'Archivo Expanded','Archivo',sans-serif;font-weight:800;text-transform:uppercase;
+  font-size:clamp(1rem,1.9vw,1.45rem);letter-spacing:.01em;padding:0 .7em;
+}
+.black-tape__track i{font-style:normal;font-family:'JetBrains Mono',monospace;font-size:.9rem;opacity:.6}
+@keyframes tapeL{to{transform:translateX(-50%)}}
+@keyframes tapeR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+
+.bmodal{border:0;padding:0;background:transparent;color:var(--white);
+  width:min(500px,calc(100% - 32px));max-width:none;max-height:calc(100dvh - 32px);margin:auto;overflow:visible}
+.bmodal::backdrop{background:rgba(10,10,10,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.bmodal[open]{animation:bmIn .55s var(--ease)}
+.bmodal[open]::backdrop{animation:bmFade .4s ease}
+@keyframes bmIn{from{opacity:0;transform:translateY(28px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes bmFade{from{opacity:0}to{opacity:1}}
+.bmodal__box{position:relative;background:var(--bg-2);border:1px solid var(--white);border-radius:14px;
+  padding:clamp(28px,5vw,44px);text-align:center;max-height:calc(100dvh - 32px);overflow:auto;
+  box-shadow:0 40px 90px rgba(0,0,0,.6)}
+.bmodal__close{position:absolute;top:12px;right:12px;width:44px;height:44px;border-radius:50%;
+  border:1px solid var(--line-2);font-size:22px;line-height:1;color:var(--white);
+  display:flex;align-items:center;justify-content:center;transition:.4s var(--ease)}
+.bmodal__close:hover{background:var(--white);color:var(--bg);border-color:var(--white)}
+.bmodal__eyebrow{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;background:var(--white);color:var(--bg);padding:7px 14px;border-radius:100px;font-weight:700}
+.bmodal__title{font-family:'Archivo',sans-serif;font-weight:300;font-size:clamp(1.7rem,5vw,2.5rem);
+  line-height:1.05;letter-spacing:-.025em;margin:22px 0 14px;color:var(--grey)}
+.bmodal__title b{font-family:'Archivo Expanded','Archivo',sans-serif;font-weight:800;color:var(--white);
+  font-size:1.35em;letter-spacing:-.02em}
+.bmodal__lead{color:var(--grey);line-height:1.55;max-width:36ch;margin:0 auto 22px}
+.bmodal__coupon{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  border:1px dashed var(--white);border-radius:10px;padding:10px 10px 10px 20px;margin-bottom:12px}
+.bmodal__code{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:clamp(1.15rem,4vw,1.5rem);letter-spacing:.14em}
+.bmodal__copy{font-weight:600;font-size:13px;border:1px solid var(--line-2);border-radius:100px;padding:10px 16px;min-height:44px;transition:.4s var(--ease)}
+.bmodal__copy:hover,.bmodal__copy.is-done{background:var(--white);color:var(--bg);border-color:var(--white)}
+.bmodal__timer{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.06em;color:var(--grey);margin-bottom:22px}
+.bmodal__timer b{color:var(--white);font-weight:700}
+.bmodal__cta{width:100%;justify-content:center}
+.bmodal__later{margin-top:14px;font-size:13px;color:var(--grey);border-bottom:1px solid var(--line-2);padding:8px 2px;min-height:44px}
+.bmodal__later:hover{color:var(--white)}
+body.modal-open{overflow:hidden}
+body.modal-open .wa-float{opacity:0;pointer-events:none}
+
+@media (max-width:640px){
+  .black-tape--top{height:120px}
+  .black-tape--top .black-tape__band--a{top:20px}
+  .black-tape--top .black-tape__band--b{top:54px}
+  .black-tape__band{padding:11px 0}
+}
+@media (prefers-reduced-motion:reduce){.black-tape__track{animation:none}.bmodal[open],.bmodal[open]::backdrop{animation:none}}
+
+/* ============================================================
+   PROTEÇÃO DE CONTEÚDO: sem seleção de texto fora dos campos
+   ============================================================ */
+body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea,select,[contenteditable="true"]{-webkit-user-select:text;user-select:text}

@@ -12,7 +12,7 @@
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Content-protection deterrents — active immediately (defined below, hoisted)
-  // protect() desligado: bloquear botão direito/atalhos atrapalha quem quer abrir projetos em nova aba
+  try { protect(); } catch (e) {}
   const gsap = window.gsap;
   const ScrollTrigger = window.ScrollTrigger;
   if (gsap && ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
@@ -416,6 +416,69 @@
     try { const u = sessionStorage.getItem('malta:wa'); if (u && u.indexOf('https://wa.me/553187637599') === 0) a.href = u; } catch (x) {}
   }
 
+  /* ---------- BLACK FRIDAY: faixas + popup do cupom (até 01/12) ---------- */
+  function blackFriday() {
+    const END = new Date('2026-12-02T00:00:00-03:00'); // vale até o fim de 01/12 (horário de Brasília)
+    const items = document.querySelectorAll('[data-black]');
+    if (!items.length) return;
+    if (Date.now() >= END.getTime()) { items.forEach(el => el.remove()); return; }
+
+    const dlg = document.getElementById('black-modal');
+    const planos = document.getElementById('planos');
+    if (!dlg || !planos) return;
+    const timer = dlg.querySelector('[data-black-timer]');
+    const tick = () => {
+      let ms = END.getTime() - Date.now();
+      if (ms <= 0) { timer.textContent = 'Última chance'; return; }
+      const d = Math.floor(ms / 864e5); ms -= d * 864e5;
+      const h = Math.floor(ms / 36e5); ms -= h * 36e5;
+      const m = Math.floor(ms / 6e4); ms -= m * 6e4;
+      const sec = Math.floor(ms / 1e3);
+      const p = n => String(n).padStart(2, '0');
+      timer.innerHTML = `Termina em <b>${d}d ${p(h)}h ${p(m)}m ${p(sec)}s</b>`;
+    };
+    let iv = null;
+    const open = () => {
+      if (dlg.open) return;
+      tick(); iv = setInterval(tick, 1000);
+      if (lenis) lenis.stop();
+      document.body.classList.add('modal-open');
+      if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+      try { sessionStorage.setItem('malta:black', '1'); } catch (x) {}
+      try { window.va('event', { name: 'black_popup_aberto' }); } catch (x) {}
+    };
+    const close = () => { if (dlg.open) dlg.close(); };
+    dlg.addEventListener('close', () => {
+      clearInterval(iv);
+      if (lenis) lenis.start();
+      document.body.classList.remove('modal-open');
+    });
+    dlg.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', close));
+    dlg.addEventListener('click', e => { if (e.target === dlg) close(); });
+
+    // copiar o cupom (usa a API de área de transferência, que não passa pelo bloqueio de cópia)
+    const copyBtn = dlg.querySelector('[data-copy]');
+    if (copyBtn) copyBtn.addEventListener('click', async () => {
+      const code = copyBtn.dataset.copy;
+      let ok = false;
+      try { await navigator.clipboard.writeText(code); ok = true; } catch (x) {}
+      copyBtn.textContent = ok ? 'Copiado ✓' : 'Anote: ' + code;
+      copyBtn.classList.add('is-done');
+      setTimeout(() => { copyBtn.textContent = 'Copiar cupom'; copyBtn.classList.remove('is-done'); }, 2500);
+    });
+
+    // abre 1x por visita, quando a área de planos aparece na tela
+    let seen = false;
+    try { seen = sessionStorage.getItem('malta:black') === '1'; } catch (x) {}
+    if (seen) return;
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(entries => {
+        if (entries.some(en => en.isIntersecting)) { io.disconnect(); setTimeout(open, 500); }
+      }, { threshold: 0, rootMargin: '-35% 0px -35% 0px' }); // dispara quando a área de planos chega ao meio da tela (funciona mesmo sendo muito alta no celular)
+      io.observe(planos);
+    } else setTimeout(open, 2500);
+  }
+
   /* ---------- MEDIÇÃO: cliques que levam ao WhatsApp (Vercel Web Analytics) ----------
      Eventos personalizados só aparecem no painel em planos Pro; as visitas aparecem em qualquer plano. */
   function trackClicks() {
@@ -434,21 +497,26 @@
      a cópia casual (salvar imagem, arrastar, "ver código fonte"), não é
      proteção absoluta. Para desligar, remova a chamada protect() no boot. */
   function protect() {
-    // Bloqueia menu de contexto (botão direito) — dificulta "salvar imagem" e "ver fonte"
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    // Impede arrastar imagens para a área de trabalho / outra aba
-    document.addEventListener('dragstart', e => {
-      if (e.target && e.target.tagName === 'IMG') e.preventDefault();
-    });
-    // Dissuade atalhos de salvar página / ver fonte / devtools
+    const isField = el => !!(el && el.closest && el.closest('input, textarea, select, [contenteditable="true"]'));
+    // Botão direito (salvar imagem / inspecionar / ver código), exceto nos campos do formulário
+    document.addEventListener('contextmenu', e => { if (!isField(e.target)) e.preventDefault(); });
+    // Arrastar imagens e selecionar texto
+    document.addEventListener('dragstart', e => { if (!isField(e.target)) e.preventDefault(); });
+    document.addEventListener('selectstart', e => { if (!isField(e.target)) e.preventDefault(); });
+    // Copiar, recortar e colar fora dos campos (nos campos o cliente ainda cola o telefone, por exemplo)
+    ['copy', 'cut', 'paste'].forEach(ev => document.addEventListener(ev, e => { if (!isField(e.target)) e.preventDefault(); }));
+    // Atalhos: salvar, imprimir, ver código, DevTools (Windows e Mac), copiar/colar/selecionar tudo
     document.addEventListener('keydown', e => {
       const k = (e.key || '').toLowerCase();
       const cmd = e.ctrlKey || e.metaKey;
+      if (k === 'f12') { e.preventDefault(); return; }
       if (cmd && (k === 's' || k === 'u' || k === 'p')) { e.preventDefault(); return; }
-      if (cmd && e.shiftKey && (k === 'i' || k === 'j' || k === 'c')) { e.preventDefault(); return; }
-      if (k === 'f12') e.preventDefault();
-    });
+      if (cmd && (e.shiftKey || e.altKey) && ['i', 'j', 'c', 'u', 'k'].includes(k)) { e.preventDefault(); return; }
+      if (cmd && e.altKey && ['dead', 'ˆ', '∆', 'ç'].includes(k)) { e.preventDefault(); return; } // Mac com Option altera a tecla
+      if (cmd && ['c', 'x', 'v', 'a'].includes(k) && !isField(e.target)) e.preventDefault();
+    }, true);
   }
+
 
   /* ---------- YEAR ---------- */
   const yr = document.getElementById('year'); if (yr) yr.textContent = new Date().getFullYear();
@@ -471,6 +539,7 @@
     shootsReveal();
     contactForm();
     trackClicks();
+    blackFriday();
     thanks();
     process();
     services();
