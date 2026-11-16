@@ -37,7 +37,8 @@ site/
 ├── js/main.js          # animações (GSAP + ScrollTrigger + Lenis)
 ├── js/vendor/          # GSAP, ScrollTrigger e Lenis (locais, sem CDN)
 └── assets/
-    ├── logo-malta.png      # seu logo (extraído do PDF)
+    ├── logo-malta.svg      # logo Malta Business (nova identidade, versão papel)
+    ├── brand/              # logos SVG da identidade (completa, wordmark, símbolo)
     ├── about.webp          # foto "Sobre" (retrato)
     ├── favicon.png
     ├── lp/<slug>.webp      # print desktop (1280×800) de cada projeto · <slug>_mob.webp = print mobile (420×909)
