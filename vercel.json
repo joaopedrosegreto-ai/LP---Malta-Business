@@ -68,7 +68,7 @@
       "has": [
         {
           "type": "host",
-          "value": "maltabusiness.vercel.app"
+          "value": "maltabusiness.com.br"
         }
       ],
       "destination": "https://maltabusiness.com.br/$1",
